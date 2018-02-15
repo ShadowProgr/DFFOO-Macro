@@ -51,3 +51,4 @@ A short clip of the script in action https://www.youtube.com/watch?v=Z-5tRLwCgYA
 
 ## Feedback
 I haven't tested this script anywhere outside my own 2 PCs, so if you got any problem with it leave an issue here at github, I'll help however I can :D
+You can also contact me via Discord, ShadowProgr#8663

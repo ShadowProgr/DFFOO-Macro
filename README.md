@@ -46,3 +46,6 @@ Please note that you need to screenshot inside the clickable area of the buttons
 
 ## Preview
 A short clip of the script in action https://www.youtube.com/watch?v=Z-5tRLwCgYA
+
+## Feedback
+I haven't tested this script anywhere outside my own 2 PCs, so if you got any problem with it leave an issue here at github, I'll help however I can :D

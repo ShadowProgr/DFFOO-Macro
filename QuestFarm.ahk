@@ -199,9 +199,22 @@ While (NextClicked = false) {
 	}
 	else
 	{
-		FailCount := FailCount + 1
-		if (FailCount = 10) {
-			NextClicked = true
+		ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *100 Confirm.PNG
+		if (FoundX <> "" and FoundY <> "")
+		{
+			MouseMove, %FoundX%, %FoundY%
+			Sleep, 50
+			Click, down
+			Sleep, 50
+			Click, up
+			FailCount := 0
+			Random, SleepTime, 400, 600
+			Sleep, %SleepTime%
+		} else {
+			FailCount := FailCount + 1
+			if (FailCount = 10) {
+				NextClicked = true
+			}
 		}
 	}
 }

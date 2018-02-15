@@ -25,6 +25,8 @@ It allows player/user to automate the boring process of farming a specific quest
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- *Next.png* - The image of **Next** button after battle's end
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- *Confirm.png* - The image of **Confirm** button when ranking up
+
 - Please make sure you have all the needed images before starting the script
 
 - *(Optional)* You can edit the **BattleTimeMin** and **BattleTimeMax** values in the **QuestFarm.ahk** file to estimate the battle's duration

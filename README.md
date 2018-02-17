@@ -49,6 +49,25 @@ Please note that you need to screenshot inside the clickable area of the buttons
 ## Preview
 A short clip of the script in action https://www.youtube.com/watch?v=Z-5tRLwCgYA
 
+
+## FAQ
+**Q:** Why images? Why not a time based macro?
+
+**A:** Because time based macros are either unstable or inefficient
+
+**Q:** The script stops when the battle is loading, help!!1!
+
+**A:** Open the script with any text editor (even Notepad works) and increase the *RetryTime* value
+
+**Q:** Do you still play DFFOO?
+
+**A:** Yes, and no, you may not add me.
+
+
 ## Feedback
-I haven't tested this script anywhere outside my own 2 PCs, so if you got any problem with it leave an issue here at github, I'll help however I can :D
-You can also contact me via Discord, ShadowProgr#8663
+This script haven't been heavily test so bugs might exist, if you got any problem with it leave an issue here at github, I'll help however I can :D
+
+
+## Contact
+
+You can reach me via Discord, ShadowProgr#8663

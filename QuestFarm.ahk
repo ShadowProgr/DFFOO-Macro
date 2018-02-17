@@ -1,5 +1,17 @@
+; --------- Script config
+
+; Shortest time (in seconds) you expect the battle to last. Default: 20
 BattleTimeMin := 20
-BattleTimMax := 100
+
+; Longest time (in seconds) you expect the battle to last. Default: 120
+BattleTimMax := 120
+
+; Amount of time (in seconds) to keep retrying if the button was not found. Default: 5
+; Increase this if your loading time is long
+; Note: 5 seconds here is actually a random amount between 4-6 seconds
+RetryTime := 5
+
+; ---------
 
 Sleep, 2000
 
@@ -26,7 +38,7 @@ While (MissionSelected = false) {
 	else
 	{
 		FailCount := FailCount + 1
-		if (FailCount = 10) {
+		if (FailCount = (RetryTime * 2)) {
 			Goto, ExitScript
 		}
 		Random, SleepTime, 400, 600
@@ -55,7 +67,7 @@ While (MissionStarted1 = false) {
 	else
 	{
 		FailCount := FailCount + 1
-		if (FailCount = 10) {
+		if (FailCount = (RetryTime * 2)) {
 			Goto, SelectMission
 		}
 		Random, SleepTime, 400, 600
@@ -84,7 +96,7 @@ While (MissionStarted2 = false) {
 	else
 	{
 		FailCount := FailCount + 1
-		if (FailCount = 10) {
+		if (FailCount = (RetryTime * 2)) {
 			Goto, StartMission1
 		}
 		Random, SleepTime, 400, 600
@@ -113,7 +125,7 @@ While (MissionStarted3 = false) {
 	else
 	{
 		FailCount := FailCount + 1
-		if (FailCount = 10) {
+		if (FailCount = (RetryTime * 2)) {
 			Goto, StartMission2
 		}
 		Random, SleepTime, 400, 600
@@ -142,7 +154,7 @@ While (AutoStarted = false) {
 	else
 	{
 		FailCount := FailCount + 1
-		if (FailCount = 10) {
+		if (FailCount = (RetryTime * 2)) {
 			Goto, StartMission3
 		}
 		Random, SleepTime, 400, 600
@@ -212,7 +224,7 @@ While (NextClicked = false) {
 			Sleep, %SleepTime%
 		} else {
 			FailCount := FailCount + 1
-			if (FailCount = 10) {
+			if (FailCount = (RetryTime * 2)) {
 				NextClicked = true
 			}
 		}

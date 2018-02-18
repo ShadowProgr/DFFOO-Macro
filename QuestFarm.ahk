@@ -1,17 +1,6 @@
-; --------- Script config
-
-; Shortest time (in seconds) you expect the battle to last. Default: 20
-BattleTimeMin := 20
-
-; Longest time (in seconds) you expect the battle to last. Default: 120
-BattleTimMax := 120
-
-; Amount of time (in seconds) to keep retrying if the button was not found. Default: 5
-; Increase this if your loading time is long
-; Note: 5 seconds here is actually a random amount between 4-6 seconds
-RetryTime := 5
-
-; ---------
+IniRead, BattleTimeMin, config.ini, DFFOMacro, BattleTimeMin, 20
+IniRead, BattleTimMax, config.ini, DFFOMacro, BattleTimeMin, 120
+IniRead, RetryTime, config.ini, DFFOMacro, BattleTimeMin, 10
 
 Sleep, 2000
 

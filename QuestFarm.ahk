@@ -1,232 +1,166 @@
+#Persistent
+#NoEnv
+#SingleInstance force
+
 IniRead, BattleTimeMin, config.ini, DFFOMacro, BattleTimeMin, 20
-IniRead, BattleTimMax, config.ini, DFFOMacro, BattleTimeMin, 120
-IniRead, RetryTime, config.ini, DFFOMacro, BattleTimeMin, 10
+IniRead, BattleTimeMax, config.ini, DFFOMacro, BattleTimeMax, 120
+IniRead, RetryTime, config.ini, DFFOMacro, RetryTime, 10
 
-Sleep, 2000
+CoordMode, Pixel
+CoordMode, Mouse
+CoordMode, ToolTip, Client
 
-CoordMode Pixel
-CoordMode Mouse
-
-StartScript:
-
-SelectMission:
-MissionSelected := false
-FailCount := 0
-
-While (MissionSelected = false) {
-	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *130 Start.PNG
-	if (FoundX <> "" and FoundY <> "")
-	{
-		MouseMove, %FoundX%, %FoundY%
-		Sleep, 50
-		Click, down
-		Sleep, 50
-		Click, up
-		MissionSelected = true
-	}
-	else
-	{
-		FailCount := FailCount + 1
-		if (FailCount = (RetryTime * 2)) {
-			Goto, ExitScript
-		}
-		Random, SleepTime, 400, 600
-		Sleep, %SleepTime% * 2
-	}
+Sleep, 3000
+RunCount := 1
+while (true) {
+	Main()
 }
 
-Random, SleepTime, 400, 600
-Sleep, %SleepTime% * 3
+Main() {
+	Global TimerCount, RunCount
 
-StartMission1:
-MissionStarted1 := false
-FailCount := 0
+	ToolTip, Run number %RunCount%, 15, 7, 2
+	
+	ChooseMission:
+	ToolTip, Selecting mission, 15, 30
+	MissionChosen := SelectButton("Start.PNG", 4, 130)
+	ToolTip
+	if (MissionChosen == false) {
+		ExitScript()
+	}
+	TimedSleep(3)
 
-While (MissionStarted1 = false) {
-	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *100 Begin.PNG
-	if (FoundX <> "" and FoundY <> "")
-	{
-		MouseMove, %FoundX%, %FoundY%
-		Sleep, 50
-		Click, down
-		Sleep, 50
-		Click, up
-		MissionStarted1 = true
+	ClickBegin1:
+	ToolTip, Selecting first begin button, 15, 30
+	Begin1Clicked := SelectButton("Begin.PNG")
+	ToolTip
+	if (Begin1Clicked == false) {
+		Goto, ChooseMission
 	}
-	else
-	{
-		FailCount := FailCount + 1
-		if (FailCount = (RetryTime * 2)) {
-			Goto, SelectMission
-		}
-		Random, SleepTime, 400, 600
-		Sleep, %SleepTime%
+	TimedSleep(3)
+	
+	ChooseSupport:
+	ToolTip, Selecting support, 15, 30
+	SupportChosen := SelectButton("LastOnline.PNG")
+	ToolTip
+	if (SupportChosen == false) {
+		Goto, ClickBegin1
 	}
+	TimedSleep(3)
+
+	ClickBegin2:
+	ToolTip, Selecting second begin button, 15, 30
+	Begin2Clicked := SelectButton("Begin2.PNG")
+	ToolTip
+	if (Begin2Clicked == false) {
+		Goto, ChooseSupport
+	}
+	TimedSleep(10)
+
+	ClickAuto:
+	ToolTip, Selecting auto button, 15, 30
+	AutoClicked := SelectButton("Auto.PNG")
+	ToolTip
+	if (AutoClicked == false) {
+		Goto, ClickBegin2
+	}
+
+	TimerCount := 0
+	
+	ToolTip, Waiting for battle to finish (%TimerCount%), 15, 30
+	SetTimer, UpdateTimer, 1000
+	
+	Sleep, BattleTimeMin * 1000
+
+	BattleEnded := SelectButton("Next.PNG", ((BattleTimeMax - BattleTimeMin) * 2), 100)
+	if (BattleEnded == false) {
+		Goto, ClickAuto
+	}
+	
+	SetTimer, UpdateTimer, Off
+	
+	ToolTip, Receiving rewards, 15, 30
+	SelectEndingButtons()
+	Tooltip
+	
+	RunCount := RunCount + 1
 }
 
-Random, SleepTime, 400, 600
-Sleep, %SleepTime% * 3
-
-StartMission2:
-MissionStarted2 := false
-FailCount := 0
-
-While (MissionStarted2 = false) {
-	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *100 LastOnline.PNG
-	if (FoundX <> "" and FoundY <> "")
-	{
-		MouseMove, %FoundX%, %FoundY%
-		Sleep, 50
-		Click, down
-		Sleep, 50
-		Click, up
-		MissionStarted2 = true
+FindButton(ImageName, DiffAllowed := 100) {
+	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%DiffAllowed% %ImageName%
+	if (FoundX != "" and FoundY != "") {
+		return true
 	}
-	else
-	{
-		FailCount := FailCount + 1
-		if (FailCount = (RetryTime * 2)) {
-			Goto, StartMission1
-		}
-		Random, SleepTime, 400, 600
-		Sleep, %SleepTime%
-	}
+	return false
 }
 
-Random, SleepTime, 400, 600
-Sleep, %SleepTime% * 3
+SelectButton(ImageName, RetryTimeMulti := 2, DiffAllowed := 100) {
+	Global RetryTime
 
-StartMission3:
-MissionStarted3 := false
-FailCount := 0
+	FailCount := 0
 
-While (MissionStarted3 = false) {
-	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *100 Begin2.PNG
-	if (FoundX <> "" and FoundY <> "")
-	{
-		MouseMove, %FoundX%, %FoundY%
-		Sleep, 50
-		Click, down
-		Sleep, 50
-		Click, up
-		MissionStarted3 = true
-	}
-	else
-	{
-		FailCount := FailCount + 1
-		if (FailCount = (RetryTime * 2)) {
-			Goto, StartMission2
-		}
-		Random, SleepTime, 400, 600
-		Sleep, %SleepTime%
-	}
-}
-
-Random, SleepTime, 400, 600
-Sleep, %SleepTime% * 10
-
-StartAuto:
-AutoStarted := false
-FailCount := 0
-
-While (AutoStarted = false) {
-	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *100 Auto.PNG
-	if (FoundX <> "" and FoundY <> "")
-	{
-		MouseMove, %FoundX%, %FoundY%
-		Sleep, 50
-		Click, down
-		Sleep, 50
-		Click, up
-		AutoStarted = true
-	}
-	else
-	{
-		FailCount := FailCount + 1
-		if (FailCount = (RetryTime * 2)) {
-			Goto, StartMission3
-		}
-		Random, SleepTime, 400, 600
-		Sleep, %SleepTime%
-	}
-}
-
-Sleep, %BattleTimeMin% * 1000
-
-FirstNext:
-BattleEnded := false
-FailCount := 0
-
-While (BattleEnded = false) {
-	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *100 Next.PNG
-	if (FoundX <> "" and FoundY <> "")
-	{
-		MouseMove, %FoundX%, %FoundY%
-		Sleep, 50
-		Click, down
-		Sleep, 50
-		Click, up
-		BattleEnded := true
-	}
-	else
-	{
-		FailCount := FailCount + 1
-		if (FailCount = (%BattleTimMax% - %BattleTimeMin%) * 2) {
-			Goto, StartAuto
-		}
-		Sleep, 500
-	}
-}
-
-Random, SleepTime, 400, 600
-Sleep, %SleepTime%
-
-NextLoop:
-NextClicked := false
-FailCount := 0
-
-While (NextClicked = false) {
-	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *100 Next.PNG
-	if (FoundX <> "" and FoundY <> "")
-	{
-		MouseMove, %FoundX%, %FoundY%
-		Sleep, 50
-		Click, down
-		Sleep, 50
-		Click, up
-		FailCount := 0
-		Random, SleepTime, 400, 600
-		Sleep, %SleepTime%
-	}
-	else
-	{
-		ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *100 Confirm.PNG
-		if (FoundX <> "" and FoundY <> "")
-		{
+	While (FailCount != (RetryTime * RetryTimeMulti)) {
+		ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%DiffAllowed% %ImageName%
+		if (FoundX != "" and FoundY != "") {
 			MouseMove, %FoundX%, %FoundY%
-			Sleep, 50
-			Click, down
-			Sleep, 50
-			Click, up
-			FailCount := 0
-			Random, SleepTime, 400, 600
-			Sleep, %SleepTime%
+			CustomClick()
+			return true
 		} else {
 			FailCount := FailCount + 1
-			if (FailCount = (RetryTime * 2)) {
-				NextClicked = true
+			TimedSleep(1)
+		}
+	}
+	
+	return false
+}
+
+SelectEndingButtons(RetryTimeMulti := 2, DiffAllowed := 100) {
+	Global RetryTime
+	
+	FailCount := 0
+
+	While (FailCount != (RetryTime * RetryTimeMulti)) {
+		ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%DiffAllowed% Next.PNG
+		if (FoundX != "" and FoundY != "") {
+			MouseMove, %FoundX%, %FoundY%
+			CustomClick()
+			TimedSleep(2)
+		} else {
+			ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%DiffAllowed% Confirm.PNG
+			if (FoundX != "" and FoundY != "") {
+				MouseMove, %FoundX%, %FoundY%
+				CustomClick()
+				TimedSleep(2)
+			} else {
+				FailCount := FailCount + 1
 			}
 		}
 	}
+	
+	return
 }
 
-Random, SleepTime, 400, 600
-Sleep, %SleepTime%
+CustomClick() {
+	Click, down
+	Sleep, 25
+	Click, up
+}
 
-Goto, StartScript
+TimedSleep(i := 1) {
+	Random, SleepTime, 400, 600
+	Sleep, SleepTime * i
+	return
+}
 
+ExitScript() {
+	ToolTip
+	MsgBox, Exiting script at %A_Hour%:%A_Min%
+	ExitApp
+}
 
-ExitScript:
-MsgBox Exiting script at %A_Hour%:%A_Min%
-ExitApp
-Esc::ExitApp
+UpdateTimer:
+	TimerCount := TimerCount + 1
+	ToolTip, Waiting for battle to finish (%TimerCount%), 15, 30
+
+Esc::
+	ExitApp

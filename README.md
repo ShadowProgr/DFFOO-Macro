@@ -3,6 +3,11 @@
 This is a macro written using AutoHotkey
 It allows player/user to automate the boring process of farming a specific quest mission
 
+## Features
+- Farms one mission over and over until you drop! (or until your inventory gets full)
+- Shows numbers of runs completed
+- TODO: Farm cycle quests too
+- TODO: Show average clear speed
 
 ## Requirements
 - Android emulator to run the game on PC.  Currently only Bluestacks work with DFFOO
@@ -29,7 +34,7 @@ It allows player/user to automate the boring process of farming a specific quest
 
 - Please make sure you have all the needed images before starting the script
 
-- *(Optional)* You can edit the **BattleTimeMin** and **BattleTimeMax** values in the **QuestFarm.ahk** file to estimate the battle's duration
+- *(Optional)* You can edit the values in **config.ini** file to customize the script to your needs
 
 - To end the script hit the **Esc** button
 
@@ -50,6 +55,12 @@ Please note that you need to screenshot inside the clickable area of the buttons
 A short clip of the script in action https://www.youtube.com/watch?v=Z-5tRLwCgYA
 
 
+## Changelog
+- 18/02/2018 Rewritten most parts of the code to be more clean. Added tooltips that informs you of the macro's process
+- 15/02/2018 Now macro continues when you rank up instead of stopping
+- 14/02/2018 Initial version
+
+
 ## FAQ
 **Q:** Why images? Why not a time based macro?
 
@@ -57,7 +68,7 @@ A short clip of the script in action https://www.youtube.com/watch?v=Z-5tRLwCgYA
 
 **Q:** The script stops when the battle is loading, help!!1!
 
-**A:** Open the script with any text editor (even Notepad works) and increase the *RetryTime* value
+**A:** Open the **config.ini** file with any text editor (even Notepad works) and increase the *RetryTime* value
 
 **Q:** Do you still play DFFOO?
 

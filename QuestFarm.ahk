@@ -133,6 +133,7 @@ SelectEndingButtons(RetryTimeMulti := 2, DiffAllowed := 100) {
 				TimedSleep(2)
 			} else {
 				FailCount := FailCount + 1
+				TimedSleep(1)
 			}
 		}
 	}

@@ -17,7 +17,7 @@ while (true) {
 }
 
 Main() {
-	Global TimerCount, RunCount
+	Global
 
 	ToolTip, Run number %RunCount%, 15, 7, 2
 	
@@ -72,8 +72,9 @@ Main() {
 	
 	Sleep, BattleTimeMin * 1000
 
-	BattleEnded := SelectButton("Next.PNG", ((BattleTimeMax - BattleTimeMin) * 2), 100)
+	BattleEnded := SelectButton("Next.PNG", (((BattleTimeMax - BattleTimeMin) / RetryTime) * 2), 100)
 	if (BattleEnded == false) {
+		SetTimer, UpdateTimer, Off
 		Goto, ClickAuto
 	}
 	
@@ -96,7 +97,7 @@ FindButton(ImageName, DiffAllowed := 100) {
 
 SelectButton(ImageName, RetryTimeMulti := 2, DiffAllowed := 100) {
 	Global RetryTime
-
+	
 	FailCount := 0
 
 	While (FailCount != (RetryTime * RetryTimeMulti)) {
@@ -142,9 +143,11 @@ SelectEndingButtons(RetryTimeMulti := 2, DiffAllowed := 100) {
 }
 
 CustomClick() {
+	BlockInput, On
 	Click, down
-	Sleep, 25
+	Sleep, 50
 	Click, up
+	BlockInput, Off
 }
 
 TimedSleep(i := 1) {

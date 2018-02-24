@@ -81,4 +81,4 @@ This script haven't been heavily test so bugs might exist, if you got any proble
 
 ## Contact
 
-You can reach me via this Discord server https://discord.gg/krTtpHs
+You can get support for setting up and leave feedback in this Discord server https://discord.gg/krTtpHs

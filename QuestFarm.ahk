@@ -4,6 +4,7 @@
 
 IniRead, BattleTimeMax, config.ini, DFFOMacro, BattleTimeMax, 120
 IniRead, RetryTime, config.ini, DFFOMacro, RetryTime, 10
+IniRead, UseSupport, config.ini, DFFOMacro, UseSupport, false
 
 CoordMode, Pixel
 CoordMode, Mouse
@@ -21,58 +22,70 @@ Main() {
 	ToolTip, Run number %RunCount%, 15, 7, 2
 	
 	ChooseMission:
-	ToolTip, Selecting mission, 15, 30
+	ToolTip, Selecting mission, 15, 30, 1
 	MissionChosen := SelectButton("Start.PNG", 4, 130)
-	ToolTip
+	ToolTip , , , 1
 	if (MissionChosen == false) {
 		ExitScript()
 	}
 	TimedSleep(3)
 
 	ClickBegin1:
-	ToolTip, Selecting first begin button, 15, 30
+	ToolTip, Selecting first begin button, 15, 30, 1
 	Begin1Clicked := SelectButton("Begin.PNG")
-	ToolTip
+	ToolTip , , , 1
 	if (Begin1Clicked == false) {
 		Goto, ChooseMission
 	}
 	TimedSleep(3)
 	
 	ChooseSupport:
-	ToolTip, Selecting support, 15, 30
+	ToolTip, Selecting support, 15, 30, 1
 	SupportChosen := SelectButton("LastOnline.PNG")
-	ToolTip
+	ToolTip , , , 1
 	if (SupportChosen == false) {
 		Goto, ClickBegin1
 	}
 	TimedSleep(3)
 
 	ClickBegin2:
-	ToolTip, Selecting second begin button, 15, 30
+	ToolTip, Selecting second begin button, 15, 30, 1
 	Begin2Clicked := SelectButton("Begin2.PNG")
-	ToolTip
+	ToolTip , , , 1
 	if (Begin2Clicked == false) {
 		Goto, ChooseSupport
 	}
 	TimedSleep(10)
-
+	
+	
 	ClickAuto:
-	ToolTip, Selecting auto button, 15, 30
+	if (UseSupport) {
+		ToolTip, Summoning ally, 15, 30, 1
+		WinGetPos, , , Width, , BlueStacks
+		AllySummoned := SelectButton("Auto.PNG", RetryTime, 100, (Width * 0.122), 0, 2000)
+		ToolTip , , , 1
+		if (AllySummoned == false) {
+			Goto, ClickBegin2
+		}
+		TimedSleep(5)
+	}
+	
+	ToolTip, Selecting auto button, 15, 30, 1
 	AutoClicked := SelectButton("Auto.PNG")
-	ToolTip
+	ToolTip , , , 1
 	if (AutoClicked == false) {
 		Goto, ClickBegin2
 	}
 	TimedSleep(3)
 	
-	ToolTip, Waiting for battle to finish, 15, 30
+	ToolTip, Waiting for battle to finish, 15, 30, 1
 
 	BattleEnded := SelectButton("Next.PNG", BattleTimeMax, 100)
 	if (BattleEnded == false) {
 		Goto, ClickAuto
 	}
 	
-	ToolTip, Receiving rewards, 15, 30
+	ToolTip, Receiving rewards, 15, 30, 1
 	SelectEndingButtons()
 	Tooltip
 	
@@ -87,7 +100,7 @@ FindButton(ImageName, DiffAllowed := 100) {
 	return false
 }
 
-SelectButton(ImageName, LocalRetryTime := -1, DiffAllowed := 100) {
+SelectButton(ImageName, LocalRetryTime := -1, DiffAllowed := 100, OffsetX := 0, OffsetY := 0, ClickDelay := 0) {
 	Global RetryTime, TimerCount
 	
 	
@@ -100,7 +113,10 @@ SelectButton(ImageName, LocalRetryTime := -1, DiffAllowed := 100) {
 	While (TimerCount < LocalRetryTime) {
 		ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%DiffAllowed% %ImageName%
 		if (FoundX != "" and FoundY != "") {
-			MouseMove, %FoundX%, %FoundY%
+			X := FoundX + OffsetX
+			Y := FoundY + OffsetY
+			Sleep, ClickDelay
+			MouseMove, %X%, %Y%
 			CustomClick()
 			StopTimer()
 			return true

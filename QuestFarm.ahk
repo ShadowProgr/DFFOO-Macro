@@ -2,7 +2,6 @@
 #NoEnv
 #SingleInstance force
 
-IniRead, BattleTimeMin, config.ini, DFFOMacro, BattleTimeMin, 20
 IniRead, BattleTimeMax, config.ini, DFFOMacro, BattleTimeMax, 120
 IniRead, RetryTime, config.ini, DFFOMacro, RetryTime, 10
 
@@ -64,21 +63,14 @@ Main() {
 	if (AutoClicked == false) {
 		Goto, ClickBegin2
 	}
-
-	TimerCount := 0
+	TimedSleep(3)
 	
-	ToolTip, Waiting for battle to finish (%TimerCount%), 15, 30
-	SetTimer, UpdateTimer, 1000
-	
-	Sleep, BattleTimeMin * 1000
+	ToolTip, Waiting for battle to finish, 15, 30
 
-	BattleEnded := SelectButton("Next.PNG", (((BattleTimeMax - BattleTimeMin) / RetryTime) * 2), 100)
+	BattleEnded := SelectButton("Next.PNG", BattleTimeMax, 100)
 	if (BattleEnded == false) {
-		SetTimer, UpdateTimer, Off
 		Goto, ClickAuto
 	}
-	
-	SetTimer, UpdateTimer, Off
 	
 	ToolTip, Receiving rewards, 15, 30
 	SelectEndingButtons()
@@ -95,50 +87,60 @@ FindButton(ImageName, DiffAllowed := 100) {
 	return false
 }
 
-SelectButton(ImageName, RetryTimeMulti := 2, DiffAllowed := 100) {
-	Global RetryTime
+SelectButton(ImageName, LocalRetryTime := -1, DiffAllowed := 100) {
+	Global RetryTime, TimerCount
 	
-	FailCount := 0
+	
+	if (LocalRetryTime == -1) {
+		LocalRetryTime := RetryTime
+	}
+	
+	StartTimer(LocalRetryTime)
 
-	While (FailCount != (RetryTime * RetryTimeMulti)) {
+	While (TimerCount < LocalRetryTime) {
 		ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%DiffAllowed% %ImageName%
 		if (FoundX != "" and FoundY != "") {
 			MouseMove, %FoundX%, %FoundY%
 			CustomClick()
+			StopTimer()
 			return true
-		} else {
-			FailCount := FailCount + 1
-			TimedSleep(1)
 		}
 	}
 	
+	StopTimer()
 	return false
 }
 
-SelectEndingButtons(RetryTimeMulti := 2, DiffAllowed := 100) {
-	Global RetryTime
+SelectEndingButtons(LocalRetryTime := -1, DiffAllowed := 100) {
+	Global RetryTime, TimerCount
 	
-	FailCount := 0
+	if (LocalRetryTime == -1) {
+		LocalRetryTime := RetryTime
+	}
+	
+	StartTimer(LocalRetryTime)
+	
+	SetTimer, UpdateTimer, 1000
 
-	While (FailCount != (RetryTime * RetryTimeMulti)) {
+	While (TimerCount < LocalRetryTime) {
 		ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%DiffAllowed% Next.PNG
 		if (FoundX != "" and FoundY != "") {
 			MouseMove, %FoundX%, %FoundY%
 			CustomClick()
-			TimedSleep(2)
+			TimerCount := 0
+			TimedSleep(3)
 		} else {
 			ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *%DiffAllowed% Confirm.PNG
 			if (FoundX != "" and FoundY != "") {
 				MouseMove, %FoundX%, %FoundY%
 				CustomClick()
-				TimedSleep(2)
-			} else {
-				FailCount := FailCount + 1
-				TimedSleep(1)
+				TimerCount := 0
+				TimedSleep(3)
 			}
 		}
 	}
 	
+	StopTimer()
 	return
 }
 
@@ -156,6 +158,20 @@ TimedSleep(i := 1) {
 	return
 }
 
+StartTimer(LocalTimerMax) {
+	Global TimerCount, TimerMax
+
+	TimerCount := 0
+	TimerMax := LocalTimerMax
+	ToolTip, %LocalTimerMax%, 15, 53, 3
+	SetTimer, UpdateTimer, 1000
+}
+
+StopTimer() {
+	SetTimer, UpdateTimer, Off
+	Tooltip, , , , 3
+}
+
 ExitScript() {
 	ToolTip
 	MsgBox, Exiting script at %A_Hour%:%A_Min%
@@ -164,7 +180,8 @@ ExitScript() {
 
 UpdateTimer:
 	TimerCount := TimerCount + 1
-	ToolTip, Waiting for battle to finish (%TimerCount%), 15, 30
+	TimeLeft := TimerMax - TimerCount
+	ToolTip, %TimeLeft%, 15, 53, 3
 
 Esc::
 	ExitApp

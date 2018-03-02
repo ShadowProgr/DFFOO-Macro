@@ -6,6 +6,7 @@ It allows player/user to automate the boring process of farming a specific quest
 ## Features
 - Farms one mission over and over until you drop! (or until your inventory gets full)
 - Shows numbers of runs completed
+- Summon ally at start of each battle
 - TODO: Farm cycle quests too
 - TODO: Show average clear speed
 
@@ -56,6 +57,7 @@ A short clip of the script in action https://www.youtube.com/watch?v=Z-5tRLwCgYA
 
 
 ## Changelog
+- 02/03/2018 Rewritten timer system, which should be much more precise now. Added ability to summon ally at the start of battle
 - 18/02/2018 Rewritten most parts of the code to be more clean. Added tooltips that informs you of the macro's process
 - 15/02/2018 Now macro continues when you rank up instead of stopping
 - 14/02/2018 Initial version

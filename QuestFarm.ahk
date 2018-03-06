@@ -59,7 +59,7 @@ Main() {
 	
 	
 	ClickAuto:
-	if (UseSupport) {
+	if (UseSupport == "true") {
 		ToolTip, Summoning ally, 15, 30, 1
 		WinGetPos, , , Width, , BlueStacks
 		AllySummoned := SelectButton("Auto.PNG", RetryTime, 100, (Width * 0.122), 0, 2000)

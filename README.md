@@ -3,6 +3,9 @@
 This is a macro written using AutoHotkey
 It allows player/user to automate the boring process of farming a specific quest mission
 
+## DISCLAIMER
+Usage of automation software and macros are against the ToS of the game. While the chance of being banned for usage of this macro is extremely unlikely, please be aware that the risk is still there. You are responsible for your own actions.
+
 ## Features
 - Farms one mission over and over until you drop! (or until your inventory gets full)
 - Shows numbers of runs completed

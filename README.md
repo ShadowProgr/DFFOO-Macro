@@ -80,10 +80,5 @@ A short clip of the script in action https://www.youtube.com/watch?v=Z-5tRLwCgYA
 **A:** Yes, and no, you may not add me.
 
 
-## Feedback
-This script haven't been heavily test so bugs might exist, if you got any problem with it leave an issue here at github, I'll help however I can :D
-
-
-## Contact
-
-You can get support for setting up and leave feedback in this Discord server https://discord.gg/krTtpHs
+## PLZ READ
+This macro is no longer actively developed.
